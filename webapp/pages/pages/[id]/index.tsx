@@ -1,6 +1,6 @@
 import {useRouter} from "next/router";
-import {getPage, getPages} from "../_data";
-import {useAsyncCallback} from "../../_util";
+import {getPage, getPages} from "../../../lib/client/pages";
+import {useAsyncCallback} from "../../../lib/util.ts/_util";
 import styles from "../../../styles/Home.module.css";
 
 export default function Page() {

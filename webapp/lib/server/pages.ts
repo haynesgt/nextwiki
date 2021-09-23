@@ -1,10 +1,10 @@
 import * as mongodb from "mongodb";
 import {ObjectId} from "mongodb";
-import {array, nowIso8601, randomParagraph, srand} from "../../_util";
-import {PageData, PageDoc, PageDocument} from "../../_pages";
-import {logging} from "../_logging";
+import {array, nowIso8601, randomParagraph, srand} from "../util.ts/_util";
+import {PageData, PageDoc, PageDocument} from "../data/pages";
+import {logging} from "./logging";
 
-// see commit e3aeff2963d8193229bbd59439a8f6326ab9ab23 to see this with in-memory data
+// see commit e3aeff2963d8193229bbd59439a8f6326ab9ab23:./pages/api/pages/_data.ts to see this with in-memory data
 const mongoClient = new mongodb.MongoClient(process.env.MONGODB_URL || "mongodb://localhost:27017");
 
 // noinspection JSIgnoredPromiseFromCall

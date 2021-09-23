@@ -1,7 +1,7 @@
 import type {NextPage} from 'next'
 import styles from '../styles/Home.module.css'
-import {getPages} from "./pages/_data";
-import {useAsyncCallback} from "./_util";
+import {getPages} from "../lib/client/pages";
+import {useAsyncCallback} from "../lib/util.ts/_util";
 
 const Home: NextPage = () => {
   const {data: pages, error: pagesError} = useAsyncCallback([], getPages, []);
@@ -31,4 +31,4 @@ const Home: NextPage = () => {
 }
 
 export default Home
-export {unArray} from "./_util";
+export {unArray} from "../lib/util.ts/_util";

@@ -1,6 +1,6 @@
 import {useRouter} from "next/router";
-import {createPage, getPage, updatePage} from "./_data";
-import {unArray, useAsyncCallback} from "../_util";
+import {createPage, getPage, updatePage} from "../../lib/client/pages";
+import {unArray, useAsyncCallback} from "../../lib/util.ts/_util";
 import {useState} from "react";
 
 export default function Page() {

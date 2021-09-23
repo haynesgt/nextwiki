@@ -1,4 +1,4 @@
-import {PageData, PageDoc} from "../_pages";
+import {PageData, PageDoc} from "../data/pages";
 
 export async function getPage(id: string): Promise<PageDoc | undefined> {
   const response = await fetch(`/api/pages/${id}`);
