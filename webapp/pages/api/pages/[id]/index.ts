@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from "next";
-import {createPage, getPage, updatePage} from "../../../../lib/server/pages";
+import {createPage, getPage, updatePage} from "../../../../lib/api/pages";
 import {unArray} from "../../../../lib/util.ts/_util";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
