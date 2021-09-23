@@ -82,3 +82,7 @@ export function setCancellableTimeout<T>(fn: () => T, ms: number): CancellablePr
 export function unArray<T>(value: T | T[]): T {
   return Array.isArray(value) ? value[0] : value;
 }
+
+export function nowIso8601() {
+  return new Date().toISOString();
+}

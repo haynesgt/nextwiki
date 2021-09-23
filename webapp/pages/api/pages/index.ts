@@ -1,9 +1,18 @@
 import type {NextApiRequest, NextApiResponse} from "next";
-import {getPages} from "./_data";
+import {createPage, getPages} from "./_data";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.json({
-    data: await getPages()
-  });
+  if (req.method === "GET") {
+    return res.json({
+      data: await getPages(),
+    });
+  } else if (req.method === "POST") {
+    const page = await createPage(req.body);
+    return res.json({
+      data: page,
+    });
+  } else {
+    return res.status(405);
+  }
 }
 export {createPage} from "./_data";

@@ -6,4 +6,6 @@ export interface PageData {
 export interface PageDoc {
   id: string;
   data: PageData
+  createdAt?: string;
+  updatedAt?: string;
 }

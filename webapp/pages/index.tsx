@@ -24,6 +24,9 @@ const Home: NextPage = () => {
         </div>
       )
     }
+    {
+      <a href={"/pages/create"} className={"button"}>New</a>
+    }
   </>;
 }
 

@@ -1,6 +1,8 @@
-import {array, randomParagraph, srand} from "../../_util";
+import * as mongodb from "mongodb";
+import {array, nowIso8601, randomParagraph, srand} from "../../_util";
 import {PageData, PageDoc} from "../../_pages";
-import { v4 as uuidv4 } from 'uuid';
+
+const mongoClient = new mongodb.MongoClient(process.env.MONGODB_URL || "mongodb://localhost:27017");
 
 function createPages() {
   srand();
@@ -24,15 +26,17 @@ export async function getPages(): Promise<PageDoc[]> {
 }
 
 export async function createPage(data: PageData): Promise<PageDoc> {
-  const id = uuidv4();
-  return pages[id] = {id, data};
+  const id = Math.floor(Math.random() * 0xFFFFFFFF).toString(16);
+  const now = nowIso8601();
+  return pages[id] = {id, data, updatedAt: now, createdAt: now};
 }
 
-export async function updatePage(newDoc: PageDoc): Promise<PageDoc> {
-  const pageDoc = await getPage(newDoc.id);
+export async function updatePage(updatedDoc: PageDoc): Promise<PageDoc> {
+  const pageDoc = await getPage(updatedDoc.id);
   if (pageDoc) {
-    if (newDoc.data.title) pageDoc.data.title = newDoc.data.title;
-    if (newDoc.data.content) pageDoc.data.content = newDoc.data.content;
+    if (updatedDoc.data.title) pageDoc.data.title = updatedDoc.data.title;
+    if (updatedDoc.data.content) pageDoc.data.content = updatedDoc.data.content;
+    pageDoc.updatedAt = nowIso8601();
     return pageDoc;
   }
   throw new Error("Page was missing");
