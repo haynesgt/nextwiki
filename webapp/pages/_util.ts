@@ -58,10 +58,16 @@ export function useAsyncCallback<T>(initialState: T, asyncFn: () => CancellableP
   useEffect(() => {
     const promise = asyncCallback && asyncCallback();
     if (promise) {
-      promise.then(setData).catch(setError);
+      promise.then((data) => {
+        setData(data);
+        setError(undefined);
+      }).catch((error) => {
+        setData(initialState);
+        setError(error);
+      });
       return () => promise.cancel && promise.cancel();
     }
-  }, [asyncCallback, setData]);
+  }, [asyncCallback, setData, initialState]);
   return {data, error};
 }
 

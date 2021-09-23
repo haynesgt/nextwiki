@@ -28,8 +28,7 @@
 }
 
 .pageSummary {
-  padding: 0.5em;
-  position: relative;
+  margin-bottom: 1em;
   word-break: break-word;
   hyphens: auto;
   -webkit-hyphens: auto;

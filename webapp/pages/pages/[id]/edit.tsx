@@ -1,8 +1,7 @@
 import {useRouter} from "next/router";
-import {getPage, getPages} from "../_data";
+import {getPage} from "../_data";
 import {useAsyncCallback} from "../../_util";
-import styles from "../../../styles/Home.module.css";
-import {useEffect, useRef, useState} from "react";
+import {useState} from "react";
 
 export default function Page() {
   const router = useRouter();

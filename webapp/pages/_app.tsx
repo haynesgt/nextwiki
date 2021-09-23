@@ -12,10 +12,10 @@ function MyApp({Component, pageProps}: AppProps) {
       {
         // <link rel="icon" href="/favicon.ico"/>
       }
-      <div className={styles.navbar}>
-        <h1 className={styles.title}><a href={"/"}>Wiki</a></h1>
-      </div>
     </Head>
+    <div className={styles.navbar}>
+      <h1 className={styles.title}><a href={"/"}>Wiki</a></h1>
+    </div>
     <main className={styles.main}>
       <Component {...pageProps} />
     </main>

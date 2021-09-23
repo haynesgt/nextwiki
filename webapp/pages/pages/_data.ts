@@ -1,30 +1,13 @@
-import {array, randomParagraph, setCancellableTimeout, srand} from "../_util";
-
-export interface PageDoc {
-  id: string;
-  data: {
-    title: string;
-    content: string;
-  }
-}
-
-function createPages() {
-  srand();
-  return array(10).map((_, i) => ({
-    id: `${i}`,
-    data: {
-      title: randomParagraph(5),
-      content: randomParagraph(200),
-    }
-  }));
-}
-
-const pages: PageDoc[] = createPages();
+import {PageDoc} from "../_pages";
 
 export async function getPage(id: string): Promise<PageDoc | undefined> {
-  return pages.find(page => page.id === id);
+  const response = await fetch(`/api/pages/${id}`);
+  const page = await response.json();
+  return page?.data;
 }
 
 export async function getPages(): Promise<PageDoc[]> {
-  return pages;
+  const response = await fetch("/api/pages");
+  const pages = await response.json();
+  return pages?.data;
 }
