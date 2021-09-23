@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev-db": "docker start mongo || docker run -d --net=host --name mongo mongo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
