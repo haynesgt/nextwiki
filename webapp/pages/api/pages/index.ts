@@ -6,3 +6,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     data: await getPages()
   });
 }
+export {createPage} from "./_data";

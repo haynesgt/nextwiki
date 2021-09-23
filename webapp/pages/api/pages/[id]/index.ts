@@ -1,13 +1,15 @@
 import type {NextApiRequest, NextApiResponse} from "next";
-import {getPage} from "../_data";
-
-function unArray<T>(value: T | T[]): T {
-  return Array.isArray(value) ? value[0] : value;
-}
+import {createPage, getPage} from "../_data";
+import {unArray} from "../../../_util";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const id = unArray(req.query.id);
-  res.json({
-    data: await getPage(id),
-  })
+  if (req.method === "GET") {
+    return res.json({
+      data: await getPage(id),
+    });
+  } else if (req.method === "POST") {
+    const page = await createPage(req.body);
+    return res.json({data: page});
+  }
 }

@@ -40,7 +40,7 @@ export function randomWord() {
 
   while (true) {
     const word = array(randomInt(5) + 1).map(() => randomSyllable()).join('');
-    if (!word.match(/fuc|fuk|fux|sex|dic|dik|pus/))  return word;
+    if (!word.match(/fuc|fuk|fux|sex|dic|dik|pus/)) return word;
   }
 }
 
@@ -62,12 +62,11 @@ export function useAsyncCallback<T>(initialState: T, asyncFn: () => CancellableP
         setData(data);
         setError(undefined);
       }).catch((error) => {
-        setData(initialState);
         setError(error);
       });
       return () => promise.cancel && promise.cancel();
     }
-  }, [asyncCallback, setData, initialState]);
+  }, [asyncCallback, setData]);
   return {data, error};
 }
 
@@ -78,4 +77,8 @@ export function setCancellableTimeout<T>(fn: () => T, ms: number): CancellablePr
   });
   promise.cancel = () => clearTimeout(timeout);
   return promise;
+}
+
+export function unArray<T>(value: T | T[]): T {
+  return Array.isArray(value) ? value[0] : value;
 }

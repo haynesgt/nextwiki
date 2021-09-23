@@ -1,4 +1,4 @@
-import {PageDoc} from "../_pages";
+import {PageData, PageDoc} from "../_pages";
 
 export async function getPage(id: string): Promise<PageDoc | undefined> {
   const response = await fetch(`/api/pages/${id}`);
@@ -8,6 +8,26 @@ export async function getPage(id: string): Promise<PageDoc | undefined> {
 
 export async function getPages(): Promise<PageDoc[]> {
   const response = await fetch("/api/pages");
+  const pages = await response.json();
+  return pages?.data;
+}
+
+export async function createPage(data: PageData): Promise<PageDoc> {
+  const response = await fetch("/api/pages", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {"Content-Type": "application/json"}
+  });
+  const pages = await response.json();
+  return pages?.data;
+}
+
+export async function updatePage(doc: PageDoc): Promise<PageDoc> {
+  const response = await fetch(`/api/pages/${doc.id}`, {
+    method: "POST",
+    body: JSON.stringify(doc.data),
+    headers: {"Content-Type": "application/json"}
+  });
   const pages = await response.json();
   return pages?.data;
 }
