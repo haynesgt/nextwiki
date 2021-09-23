@@ -1,16 +1,15 @@
 import {useRouter} from "next/router";
-import {createPage, getPage, updatePage} from "../_data";
+import {getPage, updatePage} from "../_data";
 import {unArray, useAsyncCallback} from "../../_util";
 import {useState} from "react";
 
 export default function Page() {
   const router = useRouter();
-  const id = unArray(router.query.id || "missing-id");
+  const id = unArray(router.query.id);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("")
   const {data: page, error: pageError} = useAsyncCallback(undefined, async () => {
-    const newPagePromise = getPage(`${id}`);
-    const newPage = await newPagePromise;
+    const newPage = id && await getPage(`${id}`);
     if (newPage) {
       if (!title) setTitle(newPage.data.title);
       if (!content) setContent(newPage.data.content);
@@ -19,7 +18,7 @@ export default function Page() {
   }, [id]);
   return <div>
     {pageError && <p>{`${pageError}`}</p>}
-    {page && <div>
+    {page && id && <div>
       <form onSubmit={async (e) => {
         e.preventDefault();
         await updatePage({id, data: {title, content}});

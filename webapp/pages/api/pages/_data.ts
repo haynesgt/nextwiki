@@ -25,12 +25,11 @@ function createPages() {
 }
 
 export async function getPage(id: string): Promise<PageDoc | undefined> {
-  try {
-    const pageData = await pages.findOne(new ObjectId(id));
-    if (pageData) return {id, data: pageData};
-  } catch (e) {
-    logging.error(e);
+  if (!ObjectId.isValid(id)) {
+    return;
   }
+  const pageData = await pages.findOne(new ObjectId(id));
+  if (pageData) return {id, data: pageData};
 }
 
 export async function getPages(): Promise<PageDoc[]> {
