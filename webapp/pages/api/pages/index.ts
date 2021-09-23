@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: page,
     });
   } else {
-    return res.status(405);
+    return res.status(405).end();
   }
 }
 export {createPage} from "./_data";

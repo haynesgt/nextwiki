@@ -22,12 +22,11 @@ export async function createPage(data: PageData): Promise<PageDoc> {
   return pages?.data;
 }
 
-export async function updatePage(doc: PageDoc): Promise<PageDoc> {
+export async function updatePage(doc: PageDoc): Promise<void> {
   const response = await fetch(`/api/pages/${doc.id}`, {
-    method: "POST",
+    method: "PUT",
     body: JSON.stringify(doc.data),
     headers: {"Content-Type": "application/json"}
   });
-  const pages = await response.json();
-  return pages?.data;
+  await response.text()
 }

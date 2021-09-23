@@ -9,9 +9,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: await getPage(id),
     });
   } else if (req.method === "PUT") {
-    const page = await updatePage({id, data: req.body});
-    return res.json({data: page});
+    await updatePage({id, data: req.body});
+    return res.status(204).end();
   } else {
-    res.status(405);
+    return res.status(405).end();
   }
 }

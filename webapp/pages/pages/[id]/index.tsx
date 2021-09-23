@@ -9,12 +9,12 @@ export default function Page() {
   const {data: page, error: pageError} = useAsyncCallback(undefined, () => getPage(`${id}`), [id]);
   return <div>
     {pageError && <p>{`${pageError}`}</p>}
-    {page ? <div>
+    {page && <div>
       <span className={styles.edit}>
         <a className={"link"} href={`/pages/${id}/edit`}>Edit</a>
       </span>
       <h1>{page.data.title}</h1>
       <p>{page.data.content}</p>
-    </div> : <p>The page is missing</p>}
+    </div>}
   </div>;
 }

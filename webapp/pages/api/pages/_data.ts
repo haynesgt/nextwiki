@@ -1,8 +1,17 @@
 import * as mongodb from "mongodb";
+import {ObjectId} from "mongodb";
 import {array, nowIso8601, randomParagraph, srand} from "../../_util";
-import {PageData, PageDoc} from "../../_pages";
+import {PageData, PageDoc, PageDocument} from "../../_pages";
+import {logging} from "../_logging";
 
+// see commit e3aeff2963d8193229bbd59439a8f6326ab9ab23 to see this with in-memory data
 const mongoClient = new mongodb.MongoClient(process.env.MONGODB_URL || "mongodb://localhost:27017");
+
+// noinspection JSIgnoredPromiseFromCall
+mongoClient.connect();
+
+const db = mongoClient.db(process.env.MONGODB_DB || "next-wiki");
+const pages = db.collection<PageDocument>("pages");
 
 function createPages() {
   srand();
@@ -15,29 +24,37 @@ function createPages() {
   })).reduce((accum, {id, data}) => ({...accum, [id]: {id, data}}), {});
 }
 
-const pages: {[key: string]: PageDoc} = createPages();
-
 export async function getPage(id: string): Promise<PageDoc | undefined> {
-  return pages[id];
+  try {
+    const pageData = await pages.findOne(new ObjectId(id));
+    if (pageData) return {id, data: pageData};
+  } catch (e) {
+    logging.error(e);
+  }
 }
 
 export async function getPages(): Promise<PageDoc[]> {
-  return Object.values(pages);
+  return await pages.find({}).map(page => ({
+    id: page._id,
+    data: page,
+  })).toArray();
 }
 
 export async function createPage(data: PageData): Promise<PageDoc> {
-  const id = Math.floor(Math.random() * 0xFFFFFFFF).toString(16);
+  // const id = randomId();
   const now = nowIso8601();
-  return pages[id] = {id, data, updatedAt: now, createdAt: now};
+  const doc = {...data, createdAt: now, updatedAt: now};
+  const inserted = await pages.insertOne(doc);
+  return {id: inserted.insertedId.toHexString(), data: doc};
 }
 
-export async function updatePage(updatedDoc: PageDoc): Promise<PageDoc> {
-  const pageDoc = await getPage(updatedDoc.id);
-  if (pageDoc) {
-    if (updatedDoc.data.title) pageDoc.data.title = updatedDoc.data.title;
-    if (updatedDoc.data.content) pageDoc.data.content = updatedDoc.data.content;
-    pageDoc.updatedAt = nowIso8601();
-    return pageDoc;
-  }
-  throw new Error("Page was missing");
+export async function updatePage(updatedDoc: PageDoc): Promise<void> {
+  await pages.updateOne({_id: new ObjectId(updatedDoc.id)}, {
+    $set:
+      {
+        title: updatedDoc.data.title,
+        content: updatedDoc.data.content,
+        updatedAt: nowIso8601(),
+      }
+  });
 }

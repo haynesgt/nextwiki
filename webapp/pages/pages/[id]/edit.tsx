@@ -19,11 +19,10 @@ export default function Page() {
   }, [id]);
   return <div>
     {pageError && <p>{`${pageError}`}</p>}
-    {page ? <div>
+    {page && <div>
       <form onSubmit={async (e) => {
         e.preventDefault();
         await updatePage({id, data: {title, content}});
-        // await createPage({title, content})
         await router.push(`/pages/${id}`);
       }}>
         <label htmlFor={"title"}>Title</label>
@@ -32,6 +31,6 @@ export default function Page() {
         <textarea onChange={e => setContent(e.target.value)} value={content}/>
         <button>Save</button>
       </form>
-    </div> : <p>The page is missing</p>}
+    </div>}
   </div>;
 }

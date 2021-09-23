@@ -86,3 +86,7 @@ export function unArray<T>(value: T | T[]): T {
 export function nowIso8601() {
   return new Date().toISOString();
 }
+
+export function randomId() {
+  return Math.floor(Math.random() * 0xFFFFFFFF).toString(32);
+}
